@@ -1,17 +1,25 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-header {
+  text-align: center;
   background-color: #222;
-  height: 150px;
-  padding: 20px;
+  padding: 10px;
   color: white;
+  flex: 1;
+}
+
+.main {
+  padding: 20px;
+  text-align: center;
+  flex: 10;
+}
+
+.display {
+  padding: 30px;
+  border: 2px black solid;
 }
 
 .App-title {
