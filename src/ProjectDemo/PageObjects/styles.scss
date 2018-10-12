@@ -1,0 +1,12 @@
+@import '../../mixins';
+
+.page {
+  background-color: lightGrey;
+  @include aspect-ratio(34, 44);
+}
+
+.page-object {
+  // background-color: red;
+  border: 0.2vw black solid;
+  // border-radius: 100vw;
+}

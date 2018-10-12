@@ -1,5 +1,7 @@
 import * as React from 'react';
 import FirstComponent from './FirstComponent'
+import Page from './ProjectDemo/PageObjects/Page';
+import PageObject from './ProjectDemo/PageObjects/PageObject';
 
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -53,7 +55,19 @@ export default class Main extends React.Component<{}, IState> {
       case DisplayTypes.Main:
         return <div>My Name is Abe And I code stuff I guess</div>;
       case DisplayTypes.Work:
-        return <div><strong>Work Part</strong><FirstComponent /></div>;
+        return (
+          <div>
+            <strong>Work Part</strong>
+            <FirstComponent />
+            <div className="page-container">
+              <Page>
+                <PageObject
+                  layout={{ h: 15, y: 0, x: 0, w: 15}}
+                />
+              </Page>
+            </div>
+          </div>
+        );
       case DisplayTypes.About:
         return (
           <div>
