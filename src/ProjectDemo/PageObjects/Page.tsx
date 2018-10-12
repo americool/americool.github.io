@@ -45,20 +45,22 @@ export default class Page extends React.Component<IPageProps, IPageState> {
     return React.Children.map(children, (child: React.ReactElement<IPageObjectProps>) => {
       const { layout = { x: 0, y: 0,  h: 0, w: 0 } } = child.props;
       const layoutStyle: React.CSSProperties = {
-        // height: cellSize * (layout.h as number),
-        // left: cellSize * (layout.x as number),
-        // position: 'absolute',
-        // top: cellSize * (layout.y as number),
-        // width: cellSize * (layout.w as number),
-        borderTop: `${cellSize * (layout.h as number)}px solid transparent`,
-        borderLeft: `${cellSize * (layout.w as number)}px solid black`,
-        borderBottom: `${cellSize * (layout.h as number)}px solid transparent`,
-        borderRight: `${cellSize * (layout.w as number)}px solid transparent`,
+        height: cellSize * (layout.h as number),
         left: cellSize * (layout.x as number),
         position: 'absolute',
         top: cellSize * (layout.y as number),
-        width: 0,
-        height: 0
+        width: cellSize * (layout.w as number)
+
+        //Triangle
+        // borderTop: `${cellSize * (layout.h as number)}px solid transparent`,
+        // borderLeft: `${cellSize * (layout.w as number)}px solid transparent`,
+        // borderBottom: `${cellSize * (layout.h as number)}px solid black`,
+        // borderRight: `${cellSize * (layout.w as number)}px solid transparent`,
+        // left: cellSize * (layout.x as number),
+        // position: 'absolute',
+        // top: cellSize * (layout.y as number),
+        // width: 0,
+        // height: 0
       };
       const style: React.CSSProperties = child.props.style ? { ...child.props.style, ...layoutStyle } : layoutStyle;
       const addedProps: IPageObjectProps = { style };
