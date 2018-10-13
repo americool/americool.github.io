@@ -1,19 +1,10 @@
 import * as React from 'react';
 import ReactResizeDetector from 'react-resize-detector';
+import { IPageObjectProps } from '../../interfaces';
 
 // import { Column, PageObjectProps, PageProps } from 'interfaces';
 import './styles.scss';
 
-export interface IPageObjectProps {
-  layout?: {
-    x: number,
-    y: number,
-    h: number,
-    w: number
-  }
-  style?: React.CSSProperties;
-  cssId?: string;
-}
 
 interface IPageProps {
   children?: React.ReactElement<IPageObjectProps> | Array<React.ReactElement<IPageObjectProps>>;
@@ -43,7 +34,7 @@ export default class Page extends React.Component<IPageProps, IPageState> {
     const { pageWidth = 100 } = this.state;
     const cellSize = pageWidth / 34;
     return React.Children.map(children, (child: React.ReactElement<IPageObjectProps>) => {
-      const { layout = { x: 0, y: 0,  h: 0, w: 0 } } = child.props;
+      const { layout = { x: 3, y: 3,  h: 3, w: 3 } } = child.props;
       const layoutStyle: React.CSSProperties = {
         height: cellSize * (layout.h as number),
         left: cellSize * (layout.x as number),

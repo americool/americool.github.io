@@ -1,15 +1,15 @@
 import { combineReducers, createStore } from 'redux';
-import mainReducer  from './main/reducer';
+import pageReducer  from './Page/reducer';
 import configureMiddleware from './middleware';
 
-import { IMainState } from '../interfaces';
+import { IPageState } from '../interfaces';
 
 export interface IRootState {
-  main: IMainState;
+  page: IPageState;
 }
 
 export const rootReducer = combineReducers<IRootState>({
-  main: mainReducer
+  page: pageReducer
 });
 
 export function configureStore(initialState?: IRootState) {

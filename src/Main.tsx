@@ -1,7 +1,5 @@
 import * as React from 'react';
-import FirstComponent from './FirstComponent'
-import Page from './ProjectDemo/PageObjects/Page';
-import PageObject from './ProjectDemo/PageObjects/PageObject';
+import PageContainer from './ProjectDemo/PageObjects/PageContainer'
 
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -58,14 +56,7 @@ export default class Main extends React.Component<{}, IState> {
         return (
           <div>
             <strong>Work Part</strong>
-            <FirstComponent />
-            <div className="page-container">
-              <Page>
-                <PageObject
-                  layout={{ h: 15, y: 0, x: 0, w: 15}}
-                />
-              </Page>
-            </div>
+            <PageContainer/>
           </div>
         );
       case DisplayTypes.About:

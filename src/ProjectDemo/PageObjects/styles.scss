@@ -10,4 +10,23 @@
   border: 0.2vw black solid;
   // transform: rotate(45deg);
   // border-radius: 100vw;
+
+  &.selected {
+    border-color: red;
+  }
+}
+
+.page-container {
+  position: relative;
+  width: 33%;
+}
+
+.page-project-container {
+  display: flex;
+}
+
+.page-object-editor {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
 }
