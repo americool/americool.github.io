@@ -5,6 +5,8 @@ import { addObject, deleteObject, editObject, setCurrentObject } from '../../sto
 import { ILayout, IPageObjectProps } from '../../interfaces';
 import TextField from '@material-ui/core/TextField';
 
+import { debounce } from 'lodash';
+
 import Page from './Page';
 import PageObject from './PageObject';
 
@@ -35,10 +37,19 @@ export class PageContainer extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props)
     this.state = {
-      x: '',
-      y: '',
-      h: '',
-      w: ''
+      x: '0',
+      y: '0',
+      h: '0',
+      w: '0'
+    }
+    this.editPageObject = debounce(this.editPageObject, 200);
+  }
+
+  public componentWillReceiveProps(nextProps: IProps){
+    const { currentObject, objects } = nextProps;
+    if (nextProps.currentObject) {
+      const {x, y, h, w} = (objects[currentObject].layout as ILayout);
+      this.setState({ x: x.toString(), y: y.toString(), h: h.toString(), w: w.toString()})
     }
   }
 
@@ -62,8 +73,7 @@ export class PageContainer extends React.Component<IProps, IState> {
         </div>
         <div className="page-object-editor">
           <div className="page-object-buttons">
-          <Button onClick={this.addOrEditPageObject('add')}>Add Object</Button>
-          <Button style={{ display }} onClick={this.addOrEditPageObject('edit')}>Edit Object</Button>
+          <Button onClick={this.addPageObject}>Add Object</Button>
           <Button style={{ display }} onClick={this.deletePageObject}>Delete Object</Button>
           </div>
           <TextField
@@ -71,47 +81,31 @@ export class PageContainer extends React.Component<IProps, IState> {
             value={this.state.x}
             onChange={this.handleChange('x')}
             type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
           />
           <TextField
             label="Y"
             value={this.state.y}
             onChange={this.handleChange('y')}
             type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
           />
           <TextField
             label="H"
             value={this.state.h}
             onChange={this.handleChange('h')}
             type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
           />
           <TextField
             label="W"
             value={this.state.w}
             onChange={this.handleChange('w')}
             type="number"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
           />
         </div>
       </div>
     )
   }
 
-  private addOrEditPageObject = (choice:string) => () => {
+  private addPageObject = () => {
     const { x, y , w, h } = this.state;
     const layout = {
         x: parseFloat(x),
@@ -119,26 +113,65 @@ export class PageContainer extends React.Component<IProps, IState> {
         h: parseFloat(h),
         w: parseFloat(w)
       }
-    if(choice === 'add') {
       this.props.addObject({layout});
-    } else {
-      this.props.editObject(layout)
-    }
+  }
+
+  private editPageObject = () => {
+    const { x, y , w, h } = this.state;
+    const layout = {
+        x: parseFloat(x),
+        y: parseFloat(y),
+        h: parseFloat(h),
+        w: parseFloat(w)
+      }
+      this.props.editObject(layout);
   }
 
   private deletePageObject = () => {
     this.props.deleteObject()
   }
 
-  private handleChange = (key: string) => (event: any) => {
-    this.setState({ ...this.state, [key]: event.target.value})
+  private handleChange = (key: string) => (event: any) =>
+  {
+    if(this.preventBadValues(key, event.target.value)){
+      this.setState({ ...this.state, [key]: event.target.value})
+      if(this.props.currentObject) {
+        this.editPageObject();
+      }
+    }
   }
 
   private handleClick = (id:string) => (event: any) => {
     console.log(id)
     this.props.setCurrentObject((id as string));
   }
+
+  private preventBadValues = (type: string, newValue: string) => {
+      if (newValue === '') {
+        return true;
+      }
+      const { x = '0', y = '0', h = '0', w = '0' } = this.state;
+      const value = parseFloat(newValue);
+      console.log(w)
+      if (value < 0) {
+        return false;
+      }
+      switch (type) {
+        case 'x':
+          return value + parseFloat(w) <= 34 ? true : false;
+        case 'y':
+          return value + parseFloat(h) <= 44 ? true : false;
+        case 'w':
+          return value + parseFloat(x) <= 34 ? true : false;
+        case 'h':
+          return value + parseFloat(y) <= 44 ? true : false;
+        default:
+          return false;
+      }
+    }
 }
+
+
 
 export const mapStateToProps = (state: IRootState) => {
   const { page: { objects, currentObject } } = state;
